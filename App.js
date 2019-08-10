@@ -48,6 +48,16 @@ const App = () => {
                     </View>
                 </View>
 
+                <View style={styles.articleContainer}>
+                  <Image source={testArticleIcon} style={styles.articleIcon}/>
+                    <View style={styles.articleSubContainer}>
+                      <Text style={styles.articleTitle}>Article Name 2</Text>
+                      <Text style={styles.articlePreview}>
+                        This is the beginning of a different article. It's a shortened version of the description. Let's read a bit more...
+                      </Text>
+                    </View>
+                </View>
+
               </View>
             </View>
             <View style={styles.footer}/>
