@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  FlatList,
   Image,
 } from 'react-native';
 
@@ -29,7 +30,29 @@ export default class App extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = { isLoading: true }
+    this.state = {
+      isLoading: true,
+      dataSource: [],
+    }
+  }
+
+  componentDidMount() {
+    return fetch('https://facebook.github.io/react-native/movies.json')
+    //return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson.movies,
+        }, function(){
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
   }
 
   render() {
@@ -55,6 +78,12 @@ export default class App extends React.Component {
                 </View>
                 <View style={styles.sectionContainer}>
                   <Text style={styles.sectionTitle}>Latest</Text>
+
+                  <FlatList
+                    data={this.state.dataSource}
+                    renderItem={({item}) => <Text>{item.title}, {item.releaseYear}</Text>}
+                    keyExtractor={({id}, index) => id}
+                  />
 
                   <View style={styles.articleContainer}>
                     <Image source={testArticleIcon} style={styles.articleIcon}/>
@@ -88,7 +117,7 @@ export default class App extends React.Component {
 
 /*async function getTitlesFromAPI() {
   try {
-    let response = await fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts)');
+    let response = await fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts');
     let arr = await response.json();
     let str = arr.getString();
 
