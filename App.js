@@ -25,47 +25,68 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App = () => {
-  return (
-    <Fragment>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
-            <View style={styles.body}>
-              <View style={styles.headerContainer}>
-                <Image source={theMuse} style={{width: 150, height: 60}}/>
-              </View>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Latest</Text>
+export default class App extends React.Component {
 
-                <View style={styles.articleContainer}>
-                  <Image source={testArticleIcon} style={styles.articleIcon}/>
-                    <View style={styles.articleSubContainer}>
-                      <Text style={styles.articleTitle}>Article Name</Text>
-                      <Text style={styles.articlePreview}>
-                        This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
-                      </Text>
-                    </View>
+  render() {
+    return (
+      <Fragment>
+          <StatusBar barStyle="dark-content" />
+          <SafeAreaView>
+            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
+              <View style={styles.body}>
+                <View style={styles.headerContainer}>
+                  <Image source={theMuse} style={{width: 150, height: 60}}/>
                 </View>
+                <View style={styles.sectionContainer}>
+                  <Text style={styles.sectionTitle}>Latest</Text>
 
-                <View style={styles.articleContainer}>
-                  <Image source={testArticleIcon} style={styles.articleIcon}/>
-                    <View style={styles.articleSubContainer}>
-                      <Text style={styles.articleTitle}>Article Name 2</Text>
-                      <Text style={styles.articlePreview}>
-                        This is the beginning of a different article. It's a shortened version of the description. Let's read a bit more...
-                      </Text>
-                    </View>
+                  <View style={styles.articleContainer}>
+                    <Image source={testArticleIcon} style={styles.articleIcon}/>
+                      <View style={styles.articleSubContainer}>
+                        <Text style={styles.articleTitle}>Article Name</Text>
+                        <Text style={styles.articlePreview}>
+                          This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
+                        </Text>
+                      </View>
+                  </View>
+
+                  <View style={styles.articleContainer}>
+                    <Image source={testArticleIcon} style={styles.articleIcon}/>
+                      <View style={styles.articleSubContainer}>
+                        <Text style={styles.articleTitle}>Article Name 2</Text>
+                        <Text style={styles.articlePreview}>
+                          This is the beginning of a different article. It's a shortened version of the description. Let's read a bit more...
+                        </Text>
+                      </View>
+                  </View>
+
                 </View>
-
               </View>
-            </View>
-            <View style={styles.footer}/>
-          </ScrollView>
-        </SafeAreaView>
-      </Fragment>
-  );
+              <View style={styles.footer}/>
+            </ScrollView>
+          </SafeAreaView>
+        </Fragment>
+    );
+  }
 };
+
+/*async function getTitlesFromAPI() {
+  try {
+    let response = await fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts)');
+    let arr = await response.json();
+    let str = arr.getString();
+
+    JSONArray jsonarray = new JSONArray(str);
+    for (int i = 0; i < jsonarray.length(); i++) {
+        JSONObject jsonobject = jsonarray.getJSONObject(i);
+        String name = jsonobject.getString("name");
+        String url = jsonobject.getString("url");
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}*/
 
 const testArticleIcon = {
   uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
@@ -150,5 +171,3 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-export default App;
