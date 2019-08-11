@@ -33,6 +33,17 @@ export default class App extends React.Component {
   }
 
   render() {
+    if(this.state.isLoading) {
+      return (
+        <Fragment>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Text>Loading...</Text>
+            </SafeAreaView>
+          </Fragment>
+      );
+    }
+
     return (
       <Fragment>
           <StatusBar barStyle="dark-content" />
