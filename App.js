@@ -36,7 +36,8 @@ export default class App extends React.Component {
     this.state = {
       isLoading: true,
       dataSource: [],
-      funString: 'funStringPlaceholder',
+      title0: '',
+      title1: '',
     }
   }
 
@@ -48,8 +49,9 @@ export default class App extends React.Component {
 
         this.setState({
           isLoading: false,
-          dataSource: responseJson.movies,
-          funString: responseJson[0].title.rendered,
+          dataSource: responseJson,
+          title0: responseJson[0].title.rendered,
+          title1: responseJson[1].title.rendered,
         }, function(){
 
         });
@@ -85,6 +87,7 @@ export default class App extends React.Component {
   }
 
   render() {
+
     if(this.state.isLoading) {
       return (
         <Fragment>
@@ -108,16 +111,10 @@ export default class App extends React.Component {
                 <View style={styles.sectionContainer}>
                   <Text style={styles.sectionTitle}>Latest</Text>
 
-                  <FlatList
-                    data={this.state.dataSource}
-                    renderItem={({item}) => <Text>{item.title}, {item.releaseYear}</Text>}
-                    keyExtractor={({id}, index) => id}
-                  />
-
                   <View style={styles.articleContainer}>
                     <Image source={testArticleIcon} style={styles.articleIcon}/>
                       <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>{this.state.funString}</Text>
+                        <Text style={styles.articleTitle}>{this.state.title0}</Text>
                         <Text style={styles.articlePreview}>
                           This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
                         </Text>
@@ -127,7 +124,7 @@ export default class App extends React.Component {
                   <View style={styles.articleContainer}>
                     <Image source={testArticleIcon} style={styles.articleIcon}/>
                       <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>Article Name 2</Text>
+                        <Text style={styles.articleTitle}>{this.state.title1}</Text>
                         <Text style={styles.articlePreview}>
                           This is the beginning of a different article. It's a shortened version of the description. Let's read a bit more...
                         </Text>
