@@ -38,6 +38,7 @@ export default class App extends React.Component {
       dataSource: [],
       title0: '',
       title1: '',
+      title2: '',
     }
   }
 
@@ -51,7 +52,14 @@ export default class App extends React.Component {
           isLoading: false,
           dataSource: responseJson,
           title0: responseJson[0].title.rendered,
+          icon0: responseJson[0].featured_image_urls.thumbnail,
+          exc0: responseJson[0].excerpt.rendered,
           title1: responseJson[1].title.rendered,
+          icon1: responseJson[1].featured_image_urls.thumbnail,
+          exc1: responseJson[1].excerpt.rendered,
+          title2: responseJson[2].title.rendered,
+          icon2: responseJson[2].featured_image_urls.thumbnail,
+          exc2: responseJson[2].excerpt.rendered,
         }, function(){
 
         });
@@ -112,23 +120,35 @@ export default class App extends React.Component {
                   <Text style={styles.sectionTitle}>Latest</Text>
 
                   <View style={styles.articleContainer}>
-                    <Image source={testArticleIcon} style={styles.articleIcon}/>
-                      <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>{this.state.title0}</Text>
-                        <Text style={styles.articlePreview}>
-                          This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
-                        </Text>
-                      </View>
+                    <View style={styles.shadow}>
+                      <Image source={{uri: this.state.icon0}} style={styles.articleIcon}/>
+                    </View>
+                    <View style={styles.articleSubContainer}>
+                      <Text style={styles.articleTitle}>{toTitleCase(this.state.title0)}</Text>
+                      <Text style={styles.articlePreview}>
+                        {unescapeHTML(this.state.exc0)}
+                      </Text>
+                    </View>
                   </View>
 
                   <View style={styles.articleContainer}>
-                    <Image source={testArticleIcon} style={styles.articleIcon}/>
-                      <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>{this.state.title1}</Text>
-                        <Text style={styles.articlePreview}>
-                          This is the beginning of a different article. It's a shortened version of the description. Let's read a bit more...
-                        </Text>
-                      </View>
+                    <Image source={{uri: this.state.icon1}} style={styles.articleIcon}/>
+                    <View style={styles.articleSubContainer}>
+                      <Text style={styles.articleTitle}>{toTitleCase(this.state.title1)}</Text>
+                      <Text style={styles.articlePreview}>
+                        {unescapeHTML(this.state.exc1)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.articleContainer}>
+                    <Image source={{uri: this.state.icon2}} style={styles.articleIcon}/>
+                    <View style={styles.articleSubContainer}>
+                      <Text style={styles.articleTitle}>{toTitleCase(this.state.title2)}</Text>
+                      <Text style={styles.articlePreview}>
+                        {unescapeHTML(this.state.exc2)}
+                      </Text>
+                    </View>
                   </View>
 
                 </View>
@@ -141,8 +161,34 @@ export default class App extends React.Component {
   }
 };
 
+function toTitleCase(str) {
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return unescapeHTML(txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    }
+  );
+}
+
+function unescapeHTML(str) {//modified from underscore.string and string.js
+      var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
+      return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
+          var match;
+
+          if ( entityCode in escapeChars) {
+              return escapeChars[entityCode];
+          } else if ( match = entityCode.match(/^#x([\da-fA-F]+)$/)) {
+              return String.fromCharCode(parseInt(match[1], 16));
+          } else if ( match = entityCode.match(/^#(\d+)$/)) {
+              return String.fromCharCode(~~match[1]);
+          } else {
+              return entity;
+          }
+      });
+  }
+
 const testArticleIcon = {
-  uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
+  uri: 'https://www.themuseatdreyfoos.com/wp-content/uploads/2019/06/Screen-Shot-2019-06-01-at-8.17.59-PM-70x70.png'
 };
 
 const theMuse = {
@@ -159,6 +205,11 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: Colors.white,
+  },
+  shadow: {
+    shadowColor: '#202020',
+    shadowOffset: {width: 0, height: 0},
+    shadowRadius: 5,
   },
   headerContainer: {
     marginTop: 32,
@@ -205,13 +256,13 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   articleTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     color: Colors.black,
   },
   articlePreview: {
     //marginTop: 2,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '300',
     color: Colors.dark,
   },
