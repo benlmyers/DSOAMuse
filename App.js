@@ -88,6 +88,8 @@ export default class App extends React.Component {
 
   render() {
 
+    const cap = this.state.title0.replace(/\w\S/g, function(t) { return t.toUpperCase() })
+
     if(this.state.isLoading) {
       return (
         <Fragment>
@@ -114,7 +116,7 @@ export default class App extends React.Component {
                   <View style={styles.articleContainer}>
                     <Image source={testArticleIcon} style={styles.articleIcon}/>
                       <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>{this.state.title0}</Text>
+                        <Text style={styles.articleTitle}>{cap}</Text>
                         <Text style={styles.articlePreview}>
                           This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
                         </Text>
