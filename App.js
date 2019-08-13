@@ -30,21 +30,26 @@ export default class App extends React.Component {
 
   constructor(props){
     super(props);
+
+    this.renderRow = this.renderRow.bind(this);
+
     this.state = {
       isLoading: true,
       dataSource: [],
+      funString: 'funStringPlaceholder',
     }
   }
 
   componentDidMount() {
-    return fetch('https://facebook.github.io/react-native/movies.json')
-    //return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts')
+    //return fetch('https://facebook.github.io/react-native/movies.json')
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts')
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
           isLoading: false,
           dataSource: responseJson.movies,
+          funString: responseJson[0].title.rendered,
         }, function(){
 
         });
@@ -53,6 +58,30 @@ export default class App extends React.Component {
       .catch((error) =>{
         console.error(error);
       });
+  }
+
+  renderRow(post) {
+    let newspost = {
+        postId: post.id,
+        postDate: post.date,
+        postLink: post.guid.rendered,
+        postTitle: post.title.rendered,
+        postExcerpt: post.excerpt.rendered,
+        postContent: post.content.rendered,
+        postCategory: post.categories,
+    }
+    return (
+      <Row style={styles.newsItemBox}>
+        <View style={styles.newsItemHighlight}>
+          <Subtitle style={styles.newsTitles}
+            numberOfLines={2}
+            newspost={newspost}
+            onPress={() => this.viewNews(newspost)}>
+            {this.unescapeHTML(post.title.rendered.toUpperCase())}
+          </Subtitle>
+        </View>
+      </Row>
+    );
   }
 
   render() {
@@ -88,7 +117,7 @@ export default class App extends React.Component {
                   <View style={styles.articleContainer}>
                     <Image source={testArticleIcon} style={styles.articleIcon}/>
                       <View style={styles.articleSubContainer}>
-                        <Text style={styles.articleTitle}>Article Name</Text>
+                        <Text style={styles.articleTitle}>{this.state.funString}</Text>
                         <Text style={styles.articlePreview}>
                           This is the beginning of the article. It's a shortened version of the description. Let's read a bit more...
                         </Text>
@@ -114,24 +143,6 @@ export default class App extends React.Component {
     );
   }
 };
-
-/*async function getTitlesFromAPI() {
-  try {
-    let response = await fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts');
-    let arr = await response.json();
-    let str = arr.getString();
-
-    JSONArray jsonarray = new JSONArray(str);
-    for (int i = 0; i < jsonarray.length(); i++) {
-        JSONObject jsonobject = jsonarray.getJSONObject(i);
-        String name = jsonobject.getString("name");
-        String url = jsonobject.getString("url");
-    }
-
-  } catch (error) {
-    console.error(error);
-  }
-}*/
 
 const testArticleIcon = {
   uri: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg'
