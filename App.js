@@ -48,22 +48,42 @@ export default class App extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
 
-        var titles = [];
-        var icons = [];
-        var excs = [];
+        //var titles = [];
+        //var icons = [];
+        //var excs = [];
+
+        var map = [[]];
 
         for(var i = 0; i < responseJson.length; i++) {
-          titles.push(responseJson[i].title.rendered);
-          icons.push(responseJson[i].featured_image_urls.thumbnail);
-          excs.push(responseJson[i].excerpt.rendered);
+          //titles.push(responseJson[i].title.rendered);
+          //icons.push(responseJson[i].featured_image_urls.thumbnail);
+          //excs.push(responseJson[i].excerpt.rendered);
+          map.push([
+            responseJson[i].title.rendered,
+            responseJson[i].featured_image_urls.thumbnail,
+            responseJson[i].excerpt.rendered
+          ]);
         }
 
         this.setState({
           isLoading: false,
           dataSource: responseJson,
-          titles: titles,
-          icons: icons,
-          excerpts: excs,
+          //titles: titles,
+          //icons: icons,
+          //excerpts: excs,
+          views: map.map((art) =>
+            <View style={styles.articleContainer}>
+              <View style={styles.shadow}>
+                <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+              </View>
+              <View style={styles.articleSubContainer}>
+                <Text style={styles.articleTitle}>{art[0]}</Text>
+                <Text style={styles.articlePreview}>
+                  {art[2]}
+                </Text>
+              </View>
+            </View>
+          )
         }, function(){
 
         });
@@ -123,41 +143,7 @@ export default class App extends React.Component {
                 <View style={styles.sectionContainer}>
                   <Text style={styles.sectionTitle}>Latest</Text>
 
-                  <View style={styles.articleContainer}>
-                    <View style={styles.shadow}>
-                      <Image source={{uri: this.state.icons[0]}} style={styles.articleIcon}/>
-                    </View>
-                    <View style={styles.articleSubContainer}>
-                      <Text style={styles.articleTitle}>{toTitleCase(this.state.titles[0])}</Text>
-                      <Text style={styles.articlePreview}>
-                        {unescapeHTML(this.state.excerpts[0])}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.articleContainer}>
-                    <View style={styles.shadow}>
-                      <Image source={{uri: this.state.icons[1]}} style={styles.articleIcon}/>
-                    </View>
-                    <View style={styles.articleSubContainer}>
-                      <Text style={styles.articleTitle}>{toTitleCase(this.state.titles[1])}</Text>
-                      <Text style={styles.articlePreview}>
-                        {unescapeHTML(this.state.excerpts[1])}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.articleContainer}>
-                    <View style={styles.shadow}>
-                      <Image source={{uri: this.state.icons[2]}} style={styles.articleIcon}/>
-                    </View>
-                    <View style={styles.articleSubContainer}>
-                      <Text style={styles.articleTitle}>{toTitleCase(this.state.titles[2])}</Text>
-                      <Text style={styles.articlePreview}>
-                        {unescapeHTML(this.state.excerpts[2])}
-                      </Text>
-                    </View>
-                  </View>
+                  {this.state.views}
 
                 </View>
               </View>
