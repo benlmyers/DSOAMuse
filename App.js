@@ -61,7 +61,7 @@ export default class App extends React.Component {
           map.push([
             responseJson[i].title.rendered,
             responseJson[i].featured_image_urls.thumbnail,
-            responseJson[i].excerpt.rendered
+            responseJson[i].excerpt.rendered,
           ]);
         }
 
@@ -77,9 +77,9 @@ export default class App extends React.Component {
                 <Image source={{uri: art[1]}} style={styles.articleIcon}/>
               </View>
               <View style={styles.articleSubContainer}>
-                <Text style={styles.articleTitle}>{art[0]}</Text>
+                <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
                 <Text style={styles.articlePreview}>
-                  {art[2]}
+                  {unescapeHTML(art[2])}
                 </Text>
               </View>
             </View>
@@ -156,6 +156,9 @@ export default class App extends React.Component {
 };
 
 function toTitleCase(str) {
+  if(str == '' || str == null) {
+    return;
+  }
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -164,22 +167,26 @@ function toTitleCase(str) {
   );
 }
 
-function unescapeHTML(str) {//modified from underscore.string and string.js
-      var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
-      return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
-          var match;
+function unescapeHTML(str) {
 
-          if ( entityCode in escapeChars) {
-              return escapeChars[entityCode];
-          } else if ( match = entityCode.match(/^#x([\da-fA-F]+)$/)) {
-              return String.fromCharCode(parseInt(match[1], 16));
-          } else if ( match = entityCode.match(/^#(\d+)$/)) {
-              return String.fromCharCode(~~match[1]);
-          } else {
-              return entity;
-          }
-      });
+  if(str == '' || str == null) {
+    return;
   }
+  var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
+  return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
+    var match;
+
+    if ( entityCode in escapeChars) {
+      return escapeChars[entityCode];
+    } else if ( match = entityCode.match(/^#x([\da-fA-F]+)$/)) {
+      return String.fromCharCode(parseInt(match[1], 16));
+    } else if ( match = entityCode.match(/^#(\d+)$/)) {
+      return String.fromCharCode(~~match[1]);
+    } else {
+      return entity;
+    }
+  });
+}
 
 const testArticleIcon = {
   uri: 'https://www.themuseatdreyfoos.com/wp-content/uploads/2019/06/Screen-Shot-2019-06-01-at-8.17.59-PM-70x70.png'
@@ -216,7 +223,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   articleContainer: {
-    marginTop: 8,
+    marginTop: 0,
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 0,
@@ -229,7 +236,7 @@ const styles = StyleSheet.create({
   articleIcon: {
     width: 55,
     height: 55,
-    marginTop: 12,
+    marginTop: 6,
     borderRadius: 5,
   },
   title: {
