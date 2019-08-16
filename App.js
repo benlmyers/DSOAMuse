@@ -41,11 +41,11 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.load(0)
+    this.load(2)
   }
 
   load(post) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=2')
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + post + '')
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -81,9 +81,16 @@ export default class App extends React.Component {
         this.setState({
           isLoading: false,
           dataSource: responseJson,
-          map: map,
           views: mapped,
         }, function(){
+
+        if(post == 5) {
+
+        } else {
+
+          this.load(post + 1);
+
+        }
 
         });
 
