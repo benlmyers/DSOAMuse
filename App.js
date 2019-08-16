@@ -26,6 +26,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+var map = [[]];
+
 export default class App extends React.Component {
 
   constructor(props){
@@ -48,8 +50,6 @@ export default class App extends React.Component {
     return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + post + '')
       .then((response) => response.json())
       .then((responseJson) => {
-
-        var map = [[]];
 
         for(var i = 0; i < responseJson.length; i++) {
           map.push([
