@@ -31,7 +31,7 @@ export default class App extends React.Component {
   constructor(props){
     super(props);
 
-    this.renderRow = this.renderRow.bind(this);
+    this.load = this.load.bind(this);
 
     this.state = {
       isLoading: true,
@@ -41,8 +41,11 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    //return fetch('https://facebook.github.io/react-native/movies.json')
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1')
+    this.load(0)
+  }
+
+  load(post) {
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=2')
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -88,30 +91,6 @@ export default class App extends React.Component {
       .catch((error) =>{
         console.error(error);
       });
-  }
-
-  renderRow(post) {
-    let newspost = {
-        postId: post.id,
-        postDate: post.date,
-        postLink: post.guid.rendered,
-        postTitle: post.title.rendered,
-        postExcerpt: post.excerpt.rendered,
-        postContent: post.content.rendered,
-        postCategory: post.categories,
-    }
-    return (
-      <Row style={styles.newsItemBox}>
-        <View style={styles.newsItemHighlight}>
-          <Subtitle style={styles.newsTitles}
-            numberOfLines={2}
-            newspost={newspost}
-            onPress={() => this.viewNews(newspost)}>
-            {this.unescapeHTML(post.title.rendered.toUpperCase())}
-          </Subtitle>
-        </View>
-      </Row>
-    );
   }
 
   render() {
