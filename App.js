@@ -16,6 +16,7 @@ import {
   StatusBar,
   FlatList,
   Image,
+  Animated,
 } from 'react-native';
 
 import {
@@ -39,17 +40,28 @@ export default class App extends React.Component {
       isLoading: true,
       dataSource: [],
       titles: [],
+      fadeAnim: [],
     }
   }
 
   componentDidMount() {
-    this.load(2)
+    this.load(1);
   }
 
   load(post) {
     return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + post + '')
       .then((response) => response.json())
       .then((responseJson) => {
+
+        this.state.fadeAnim.push(new Animated.Value(0));
+
+        Animated.timing(                  // Animate over time
+          this.state.fadeAnim[post - 1],            // The animated value to drive
+          {
+            toValue: 1,                   // Animate to opacity: 1 (opaque)
+            duration: 1000,              // Make it take a while
+          }
+        ).start();
 
         for(var i = 0; i < responseJson.length; i++) {
           map.push([
@@ -60,20 +72,22 @@ export default class App extends React.Component {
         }
 
         var mapped = map.map((art) =>
-          <View style={styles.articleContainer}>
-          <View>
-            <View style={styles.shadow}>
-              <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+          <Animated.View style={{opacity: this.state.fadeAnim[post - 1]}}>
+            <View style={styles.articleContainer}>
+            <View>
+              <View style={styles.shadow}>
+                <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+              </View>
+              <Image source={testCategoryIcon} style={styles.categoryIcon}/>
             </View>
-            <Image source={testCategoryIcon} style={styles.categoryIcon}/>
-          </View>
-            <View style={styles.articleSubContainer}>
-              <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
-              <Text style={styles.articlePreview}>
-                {unescapeHTML(art[2])}
-              </Text>
+              <View style={styles.articleSubContainer}>
+                <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
+                <Text style={styles.articlePreview}>
+                  {unescapeHTML(art[2])}
+                </Text>
+              </View>
             </View>
-          </View>
+          </Animated.View>
         )
 
         mapped.shift();
@@ -84,7 +98,7 @@ export default class App extends React.Component {
           views: mapped,
         }, function(){
 
-        if(post == 5) {
+        if(post == 20) {
 
         } else {
 
