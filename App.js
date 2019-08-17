@@ -16,6 +16,7 @@ import {
   StatusBar,
   FlatList,
   Image,
+  Animated,
 } from 'react-native';
 
 import {
@@ -25,6 +26,8 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+var map = [[]];
 
 export default class App extends React.Component {
 
@@ -37,19 +40,30 @@ export default class App extends React.Component {
       isLoading: true,
       dataSource: [],
       titles: [],
+      fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
     }
   }
 
   componentDidMount() {
-    this.load(0)
+    this.load(1);
   }
 
   load(post) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=2')
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + post + '')
       .then((response) => response.json())
       .then((responseJson) => {
 
-        var map = [[]];
+        this.state.fadeAnim.push(new Animated.Value(0));
+
+        if(this.state.fadeAnim[post - 1]._value == 0) {
+          Animated.timing(
+            this.state.fadeAnim[post - 1],
+            {
+              toValue: 1,
+              duration: 1000,
+            }
+          ).start();
+        }
 
         for(var i = 0; i < responseJson.length; i++) {
           map.push([
@@ -60,20 +74,22 @@ export default class App extends React.Component {
         }
 
         var mapped = map.map((art) =>
-          <View style={styles.articleContainer}>
-          <View>
-            <View style={styles.shadow}>
-              <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+          <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
+            <View style={styles.articleContainer}>
+            <View>
+              <View style={styles.shadow}>
+                <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+              </View>
+              <Image source={testCategoryIcon} style={styles.categoryIcon}/>
             </View>
-            <Image source={testCategoryIcon} style={styles.categoryIcon}/>
-          </View>
-            <View style={styles.articleSubContainer}>
-              <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
-              <Text style={styles.articlePreview}>
-                {unescapeHTML(art[2])}
-              </Text>
+              <View style={styles.articleSubContainer}>
+                <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
+                <Text style={styles.articlePreview}>
+                  {unescapeHTML(art[2])}
+                </Text>
+              </View>
             </View>
-          </View>
+          </Animated.View>
         )
 
         mapped.shift();
@@ -81,9 +97,16 @@ export default class App extends React.Component {
         this.setState({
           isLoading: false,
           dataSource: responseJson,
-          map: map,
           views: mapped,
         }, function(){
+
+        if(post == 20) {
+
+        } else {
+
+          this.load(post + 1);
+
+        }
 
         });
 
