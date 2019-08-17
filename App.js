@@ -40,7 +40,7 @@ export default class App extends React.Component {
       isLoading: true,
       dataSource: [],
       titles: [],
-      fadeAnim: [],
+      fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
     }
   }
 
@@ -55,13 +55,15 @@ export default class App extends React.Component {
 
         this.state.fadeAnim.push(new Animated.Value(0));
 
-        Animated.timing(                  // Animate over time
-          this.state.fadeAnim[post - 1],            // The animated value to drive
-          {
-            toValue: 1,                   // Animate to opacity: 1 (opaque)
-            duration: 1000,              // Make it take a while
-          }
-        ).start();
+        if(this.state.fadeAnim[post - 1]._value == 0) {
+          Animated.timing(
+            this.state.fadeAnim[post - 1],
+            {
+              toValue: 1,
+              duration: 1000,
+            }
+          ).start();
+        }
 
         for(var i = 0; i < responseJson.length; i++) {
           map.push([
@@ -72,7 +74,7 @@ export default class App extends React.Component {
         }
 
         var mapped = map.map((art) =>
-          <Animated.View style={{opacity: this.state.fadeAnim[post - 1]}}>
+          <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
             <View style={styles.articleContainer}>
             <View>
               <View style={styles.shadow}>
