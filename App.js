@@ -158,6 +158,8 @@ function toTitleCase(str) {
   if(str == '' || str == null) {
     return;
   }
+  str = str.replace("&#8220;", '"')
+  str = str.replace("&#8216;", "'")
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -172,6 +174,7 @@ function unescapeHTML(str) {
     return;
   }
   var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
+  str = str.replace(/<\/?[^>]+(>|$)/g, "");
   return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
     var match;
 
