@@ -49,7 +49,7 @@ export default class App extends React.Component {
   }
 
   load(post) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + post + '')
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&per_page=1&page=' + post + '')
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -70,6 +70,7 @@ export default class App extends React.Component {
             responseJson[i].title.rendered,
             responseJson[i].featured_image_urls.thumbnail,
             responseJson[i].excerpt.rendered,
+            responseJson[i].date,
           ]);
         }
 
@@ -80,7 +81,7 @@ export default class App extends React.Component {
               <View style={styles.shadow}>
                 <Image source={{uri: art[1]}} style={styles.articleIcon}/>
               </View>
-              <Image source={testCategoryIcon} style={styles.categoryIcon}/>
+              <Text style={{textAlign: 'center', fontSize: 9, fontWeight: 600, color: 'gray', marginTop: 10}}>DEC 1</Text>
             </View>
               <View style={styles.articleSubContainer}>
                 <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
