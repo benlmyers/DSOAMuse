@@ -81,7 +81,7 @@ export default class App extends React.Component {
               <View style={styles.shadow}>
                 <Image source={{uri: art[1]}} style={styles.articleIcon}/>
               </View>
-              <Text style={{textAlign: 'center', fontSize: 9, fontWeight: 600, color: 'gray', marginTop: 10}}>DEC 1</Text>
+              <Text style={{textAlign: 'center', fontSize: 9, fontWeight: 600, color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
             </View>
               <View style={styles.articleSubContainer}>
                 <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
@@ -185,6 +185,31 @@ function unescapeHTML(str) {
       return entity;
     }
   });
+}
+
+function simpleDate(str) {
+  if(str == '' || str == null) {
+    return;
+  }
+  var month = str.slice(5, 7);
+  switch(month) {
+    case "01": month = "JAN"; break;
+    case "02": month = "FEB"; break;
+    case "03": month = "MAR"; break;
+    case "04": month = "APR"; break;
+    case "05": month = "MAY"; break;
+    case "06": month = "JUN"; break;
+    case "07": month = "JUL"; break;
+    case "08": month = "AUG"; break;
+    case "09": month = "SEP"; break;
+    case "10": month = "OCT"; break;
+    case "11": month = "NOV"; break;
+    case "12": month = "DEC"; break;
+  }
+
+  var day = str.slice(8, 10);
+
+  return month + " " + parseInt(day);
 }
 
 const testArticleIcon = {
