@@ -175,6 +175,7 @@ function unescapeHTML(str) {
   }
   var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
   str = str.replace(/<\/?[^>]+(>|$)/g, "");
+  str = str.replace("&nbsp; ", "");
   return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
     var match;
 
