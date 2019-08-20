@@ -19,6 +19,7 @@ import {
   Image,
   Animated,
   Button,
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -70,6 +71,7 @@ export default class NewsScreen extends React.Component {
           isLoading: false,
           dataSource: responseJson,
           articleTitle: responseJson[0].title.rendered,
+          articleBanner: responseJson[0].featured_image_urls.large,
         }, function(){
 
         });
@@ -101,6 +103,9 @@ export default class NewsScreen extends React.Component {
           <StatusBar barStyle="dark-content">
           </StatusBar>
           <SafeAreaView>
+            <View style={styles.bgImageWrapper}>
+              <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
+            </View>
             <Text>{this.state.articleTitle}</Text>
           </SafeAreaView>
         </Fragment>
@@ -108,3 +113,17 @@ export default class NewsScreen extends React.Component {
   }
 
 }
+
+const screenWidth = Math.round(Dimensions.get('window').width);
+
+var styles = StyleSheet.create({
+  bgImageWrapper: {
+    position: 'absolute',
+    top: 0, bottom: 0, left: 0, right: 0,
+    height: 250,
+  },
+  bgImage: {
+    flex: 1,
+    resizeMode: "stretch"
+  },
+});
