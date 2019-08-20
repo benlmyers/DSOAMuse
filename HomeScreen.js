@@ -18,6 +18,7 @@ import {
   FlatList,
   Image,
   Animated,
+  Button,
 } from 'react-native';
 
 import {
@@ -36,6 +37,10 @@ import {
 var map = [[]];
 
 export default class HomeScreen extends React.Component {
+
+  static navigationOptions = {
+    title: 'The Muse',
+  };
 
   constructor(props){
     super(props);
@@ -139,9 +144,17 @@ export default class HomeScreen extends React.Component {
     }
 
     return (
+
       <Fragment>
-          <StatusBar barStyle="dark-content" />
+          <StatusBar barStyle="dark-content" title="The Muse">
+          </StatusBar>
           <SafeAreaView>
+
+          <Button
+            title="Visit an Article"
+            onPress={() => navigate('News', {postNum: 5})}
+          />
+
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
               <View style={styles.body}>
                 <View style={styles.headerContainer}>

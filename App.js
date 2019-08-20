@@ -34,12 +34,13 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import HomeScreen from './HomeScreen';
+import NewsScreen from './NewsScreen';
 
 var map = [[]];
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
-  //Profile: {screen: ProfileScreen},
+  News: {screen: NewsScreen},
 });
 
 const App = createAppContainer(MainNavigator);
