@@ -18,6 +18,7 @@ import {
   FlatList,
   Image,
   Animated,
+  Button,
 } from 'react-native';
 
 import {
@@ -139,9 +140,17 @@ export default class HomeScreen extends React.Component {
     }
 
     return (
+
       <Fragment>
-          <StatusBar barStyle="dark-content" />
+          <StatusBar barStyle="dark-content">
+          </StatusBar>
           <SafeAreaView>
+
+          <Button
+            title="Go to Jane's profile"
+            onPress={() => navigate('News', {})}
+          />
+
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
               <View style={styles.body}>
                 <View style={styles.headerContainer}>
