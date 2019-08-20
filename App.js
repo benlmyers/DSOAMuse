@@ -7,6 +7,7 @@
  */
 
 import React, {Fragment} from 'react';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,6 +19,11 @@ import {
   Image,
   Animated,
 } from 'react-native';
+
+import {
+  createStackNavigator,
+  createAppContainer
+} from 'react-navigation';
 
 import {
   Header,
