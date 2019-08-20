@@ -38,6 +38,10 @@ var map = [[]];
 
 export default class HomeScreen extends React.Component {
 
+  static navigationOptions = {
+    title: 'The Muse',
+  };
+
   constructor(props){
     super(props);
 
@@ -142,13 +146,13 @@ export default class HomeScreen extends React.Component {
     return (
 
       <Fragment>
-          <StatusBar barStyle="dark-content">
+          <StatusBar barStyle="dark-content" title="The Muse">
           </StatusBar>
           <SafeAreaView>
 
           <Button
-            title="Go to Jane's profile"
-            onPress={() => navigate('News', {})}
+            title="Visit an Article"
+            onPress={() => navigate('News', {postNum: 5})}
           />
 
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
