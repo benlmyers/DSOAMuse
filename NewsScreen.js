@@ -55,7 +55,7 @@ export default class NewsScreen extends React.Component {
   }
 
   load(post) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?per_page=1&page=' + this.props.navigation.getParam('postNum', -1))
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?include[]=' + this.props.navigation.getParam('postNum', 10000))
       .then((response) => response.json())
       .then((responseJson) => {
 
@@ -110,7 +110,7 @@ export default class NewsScreen extends React.Component {
                   <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
                 </View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <Text>{this.props.navigation.getParam('postNum', -1)}</Text>
+                <Text>{this.props.navigation.getParam('postNum', 10000)}</Text>
                 <Text style={styles.content}>
                   {unescapeHTML(this.state.articleContent)}
                 </Text>

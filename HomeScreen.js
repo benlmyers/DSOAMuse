@@ -54,6 +54,8 @@ export default class HomeScreen extends React.Component {
       titles: [],
       fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
     }
+
+    global.artNum = 0;
   }
 
   componentDidMount() {
@@ -83,7 +85,7 @@ export default class HomeScreen extends React.Component {
             responseJson[i].featured_image_urls.thumbnail,
             responseJson[i].excerpt.rendered,
             responseJson[i].date,
-            i,
+            responseJson[i].id,
           ]);
         }
 
@@ -93,10 +95,11 @@ export default class HomeScreen extends React.Component {
         <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
           <View style={styles.articleContainer}>
             <View>
-              <TouchableHighlight style={styles.shadow} onPress={() => navigate('News', {postNum: 6})}>
+              <TouchableHighlight style={styles.shadow} onPress={() => navigate('News', {postNum: art[4]})}>
                 <Image source={{uri: art[1]}} style={styles.articleIcon}/>
               </TouchableHighlight>
               <Text style={{textAlign: 'center', fontSize: 9, fontWeight: '600', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
+              <Text>{art[4]}</Text>
               </View>
               <View style={styles.articleSubContainer}>
                 <TouchableHighlight onPress={() => navigate('News', {postNum: 5})}>
