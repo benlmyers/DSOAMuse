@@ -19,6 +19,7 @@ import {
   Image,
   Animated,
   Button,
+  TouchableHighlight,
 } from 'react-native';
 
 import {
@@ -53,6 +54,8 @@ export default class HomeScreen extends React.Component {
       titles: [],
       fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
     }
+
+    global.artNum = 0;
   }
 
   componentDidMount() {
@@ -82,26 +85,34 @@ export default class HomeScreen extends React.Component {
             responseJson[i].featured_image_urls.thumbnail,
             responseJson[i].excerpt.rendered,
             responseJson[i].date,
+            responseJson[i].id,
           ]);
         }
 
+        const {navigate} = this.props.navigation;
+
         var mapped = map.map((art) =>
-          <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
-            <View style={styles.articleContainer}>
+        <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
+          <View style={styles.articleContainer}>
             <View>
-              <View style={styles.shadow}>
+              <TouchableHighlight style={styles.shadow} onPress={() => navigate('News', {postNum: art[4]})}>
                 <Image source={{uri: art[1]}} style={styles.articleIcon}/>
-              </View>
+              </TouchableHighlight>
               <Text style={{textAlign: 'center', fontSize: 9, fontWeight: '600', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
-            </View>
-              <View style={styles.articleSubContainer}>
-                <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
-                <Text style={styles.articlePreview}>
-                  {unescapeHTML(art[2])}
-                </Text>
+              <Text>{art[4]}</Text>
               </View>
+              <View style={styles.articleSubContainer}>
+                <TouchableHighlight onPress={() => navigate('News', {postNum: 5})}>
+                  <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={() => navigate('News', {postNum: 5})}>
+                  <Text style={styles.articlePreview}>
+                  {unescapeHTML(art[2])}
+                  </Text>
+                </TouchableHighlight>
             </View>
-          </Animated.View>
+          </View>
+        </Animated.View>
         )
 
         mapped.shift();
@@ -130,8 +141,6 @@ export default class HomeScreen extends React.Component {
 
   render() {
 
-    const {navigate} = this.props.navigation;
-
     if(this.state.isLoading) {
       return (
         <Fragment>
@@ -149,12 +158,6 @@ export default class HomeScreen extends React.Component {
           <StatusBar barStyle="dark-content" title="The Muse">
           </StatusBar>
           <SafeAreaView>
-
-          <Button
-            title="Visit an Article"
-            onPress={() => navigate('News', {postNum: 5})}
-          />
-
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
               <View style={styles.body}>
                 <View style={styles.headerContainer}>
