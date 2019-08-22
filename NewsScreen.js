@@ -27,6 +27,8 @@ import {
   createAppContainer
 } from 'react-navigation';
 
+import { WebView } from 'react-native-webview';
+
 import {
   Header,
   LearnMoreLinks,
@@ -46,7 +48,7 @@ export default class NewsScreen extends React.Component {
       isLoading: true,
       dataSource: [],
       titles: [],
-      fadeAnim: new Animated.Value(0),
+      fadeAnim: [new Animated.Value(0), new Animated.Value(0)],
     }
   }
 
@@ -60,10 +62,20 @@ export default class NewsScreen extends React.Component {
       .then((responseJson) => {
 
         Animated.timing(
-          this.state.fadeAnim,
+          this.state.fadeAnim[0],
           {
             toValue: 1,
+            delay: 300,
             duration: 500,
+          }
+        ).start();
+
+        Animated.timing(
+          this.state.fadeAnim[1],
+          {
+            toValue: 1,
+            delay: 600,
+            duration: 1000,
           }
         ).start();
 
@@ -105,14 +117,16 @@ export default class NewsScreen extends React.Component {
           </StatusBar>
           <SafeAreaView>
             <ScrollView>
-              <Animated.View style={{opacity: this.state.fadeAnim}}>
-                <View style={styles.bgImageWrapper}>
-                  <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
-                </View>
+              <Animated.View style={{opacity: this.state.fadeAnim[0]}}>
+                <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
+                  <View style={styles.bgImageWrapper}>
+                    <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
+                  </View>
+                </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <Text style={styles.content}>
-                  {unescapeHTML(this.state.articleContent)}
-                </Text>
+                <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
+                  <WebView source={{html: htmlStyle + this.state.articleContent}} style={styles.content}/>
+                </Animated.View>
               </Animated.View>
             </ScrollView>
           </SafeAreaView>
@@ -186,6 +200,15 @@ function simpleDate(str) {
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
+const htmlStyle = '\
+<style> \
+body { \
+  font-size: 42px; \
+  font-family: "system font" \
+} \
+</style> \
+'
+
 var styles = StyleSheet.create({
   bgImageWrapper: {
     top: 0, bottom: 0, left: 0, right: 0,
@@ -203,7 +226,10 @@ var styles = StyleSheet.create({
     padding: 20,
   },
   content: {
-    padding: 5,
+    padding: 10,
+    margin: 10,
     fontSize: 14,
+    height: 5000,
+    fontFamily: 'system font'
   },
 });
