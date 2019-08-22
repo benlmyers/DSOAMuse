@@ -110,7 +110,6 @@ export default class NewsScreen extends React.Component {
                   <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
                 </View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <Text>{this.props.navigation.getParam('postNum', 10000)}</Text>
                 <Text style={styles.content}>
                   {unescapeHTML(this.state.articleContent)}
                 </Text>
