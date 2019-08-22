@@ -204,7 +204,19 @@ const htmlStyle = '\
 <style> \
 body { \
   font-size: 42px; \
-  font-family: "system font" \
+  font-family: "system font"; \
+} \
+a { \
+  text-decoration: "none"; \
+  color: #ff00ff; \
+} \
+button { \
+  width: 200; \
+  height: 40; \
+} \
+img { \
+  color: #444444; \
+  font-size: 12px; \
 } \
 </style> \
 '
