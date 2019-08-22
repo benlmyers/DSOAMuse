@@ -95,17 +95,18 @@ export default class HomeScreen extends React.Component {
         <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
           <View style={styles.articleContainer}>
             <View>
-              <TouchableHighlight style={styles.shadow} onPress={() => navigate('News', {postNum: art[4]})}>
-                <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+              <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
+                <View style={styles.shadow}>
+                  <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+                </View>
               </TouchableHighlight>
               <Text style={{textAlign: 'center', fontSize: 9, fontWeight: '600', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
-              <Text>{art[4]}</Text>
               </View>
               <View style={styles.articleSubContainer}>
-                <TouchableHighlight onPress={() => navigate('News', {postNum: 5})}>
+                <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
                   <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight onPress={() => navigate('News', {postNum: 5})}>
+                <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
                   <Text style={styles.articlePreview}>
                   {unescapeHTML(art[2])}
                   </Text>
@@ -258,6 +259,9 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: Colors.white,
+  },
+  highlight: {
+    tintColor: Colors.white,
   },
   shadow: {
     shadowColor: "#000",
