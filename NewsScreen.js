@@ -84,7 +84,7 @@ export default class NewsScreen extends React.Component {
           dataSource: responseJson,
           articleTitle: responseJson[0].title.rendered,
           articleBanner: responseJson[0].featured_image_urls.large,
-          articleContent: responseJson[0].content.rendered,
+          articleContent: modify(responseJson[0].content.rendered),
         }, function(){
 
         });
@@ -134,6 +134,12 @@ export default class NewsScreen extends React.Component {
     );
   }
 
+}
+
+function modify(str) {
+  for(var i = 0; i < 100; i++) {
+    return str.replace(/<div*?<\/div>/g, '');
+  }
 }
 
 function toTitleCase(str) {
@@ -202,21 +208,33 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 
 const htmlStyle = '\
 <style> \
-body { \
+* { \
   font-size: 42px; \
   font-family: "system font"; \
 } \
-a { \
-  text-decoration: "none"; \
-  color: #ff00ff; \
+.Buttons { \
+  display: none; \
 } \
-button { \
-  width: 200; \
-  height: 40; \
+input { \
+  display: none; \
+} \
+.wp-polls-loading { \
+  display: none; \
+} \
+.slideshowwrap, .remodal-close { \
+  display: none; \
+} \
+a { \
+  text-decoration: none; \
+  color: #000000; \
 } \
 img { \
   color: #444444; \
   font-size: 12px; \
+} \
+input { \
+  width: 20px; \
+  height: 20px; \
 } \
 </style> \
 '
