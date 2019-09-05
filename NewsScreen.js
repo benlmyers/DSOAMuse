@@ -128,7 +128,7 @@ export default class NewsScreen extends React.Component {
              }}                                      // Store reference
              onBuffer={this.onBuffer}                // Callback when remote video is buffering
              onError={this.videoError}               // Callback when video cannot be loaded
-             style={styles.backgroundVideo} />
+             />
             </View>
 
               <Animated.View style={{opacity: this.state.fadeAnim[0]}}>
@@ -280,7 +280,7 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   backgroundVideo: {
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     left: 0,
     bottom: 0,
