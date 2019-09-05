@@ -32,6 +32,8 @@ target 'DSOAMuse' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'DSOAMuseTests' do
     inherit! :search_paths
     # Pods for testing
