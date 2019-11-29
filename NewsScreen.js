@@ -37,6 +37,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+//import { DrawerNavigator } from 'react-navigation';
+
 export default class NewsScreen extends React.Component {
 
   constructor(props){
@@ -49,6 +51,7 @@ export default class NewsScreen extends React.Component {
       dataSource: [],
       titles: [],
       fadeAnim: [new Animated.Value(0), new Animated.Value(0)],
+      textBox: "\n\n\n\n\n\n\n\n",
     }
   }
 
@@ -104,7 +107,7 @@ export default class NewsScreen extends React.Component {
         <Fragment>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
-              <Text>Loading...</Text>
+              <Text style={{textAlign: 'center', paddingTop: 50, ...Platform.select({ios: {fontWeight: '700',},android: {fontFamily: 'Roboto-Thin',},}),}}>GETTING YOUR ARTICLE</Text>
             </SafeAreaView>
           </Fragment>
       );
@@ -125,7 +128,7 @@ export default class NewsScreen extends React.Component {
                 </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
                 <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
-                  <WebView source={{html: htmlStyle + this.state.articleContent}} style={styles.content}/>
+                  <WebView source={{html: this.state.articleContent + htmlStyle}} style={styles.content}/>
                 </Animated.View>
               </Animated.View>
             </ScrollView>
@@ -148,6 +151,7 @@ function toTitleCase(str) {
   }
   str = str.replace("&#8220;", '"')
   str = str.replace("&#8216;", "'")
+  str = str.replace("&#8217;", "'");
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -204,13 +208,25 @@ function simpleDate(str) {
   return month + " " + parseInt(day);
 }
 
+/*const RootDrawer = DrawerNavigator(
+	{
+		Home: {
+			screen: NewsScreen,
+		},
+	},
+	{
+		// Custom rendering component of drawer panel
+		//contentComponent: MainDrawer,
+	}
+);*/
+
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 const htmlStyle = '\
 <style> \
 * { \
-  font-size: 42px; \
-  font-family: "system font"; \
+  font-size: 46px; \
+  //font-family: "system font"; \
 } \
 .Buttons { \
   display: none; \
@@ -259,7 +275,8 @@ var styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     fontSize: 14,
+    //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
     height: 5000,
-    fontFamily: 'system font'
+    //fontFamily: 'system font'
   },
 });
