@@ -226,7 +226,7 @@ const htmlStyle = '\
 <style> \
 * { \
   font-size: 46px; \
-  font-family: "system font"; \
+  //font-family: "system font"; \
 } \
 .Buttons { \
   display: none; \
@@ -277,6 +277,6 @@ var styles = StyleSheet.create({
     fontSize: 14,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
     height: 5000,
-    fontFamily: 'system font'
+    //fontFamily: 'system font'
   },
 });
