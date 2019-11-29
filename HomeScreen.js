@@ -41,6 +41,12 @@ export default class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: 'The Muse',
+    headerStyle: {
+      backgroundColor: '#ff0000',
+    },
+    headerTitleStyle: {
+      color: '#ffffff',
+    }
   };
 
   constructor(props){
@@ -100,7 +106,7 @@ export default class HomeScreen extends React.Component {
                   <Image source={{uri: art[1]}} style={styles.articleIcon}/>
                 </View>
               </TouchableHighlight>
-              <Text style={{textAlign: 'center', fontSize: 9, fontWeight: '600', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
+              <Text style={{textAlign: 'center', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
               </View>
               <View style={styles.articleSubContainer}>
                 <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
@@ -145,7 +151,7 @@ export default class HomeScreen extends React.Component {
     if(this.state.isLoading) {
       return (
         <Fragment>
-            <StatusBar barStyle="dark-content" />
+            <StatusBar barStyle="dark-content" title="Loading..." />
             <SafeAreaView>
               <Text>Loading...</Text>
             </SafeAreaView>
@@ -156,7 +162,7 @@ export default class HomeScreen extends React.Component {
     return (
 
       <Fragment>
-          <StatusBar barStyle="dark-content" title="The Muse">
+          <StatusBar barStyle="dark-content" title="The Muse" hidden={false} backgroundColor="#000000">
           </StatusBar>
           <SafeAreaView>
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
@@ -183,8 +189,10 @@ function toTitleCase(str) {
   if(str == '' || str == null) {
     return;
   }
-  str = str.replace("&#8220;", '"')
-  str = str.replace("&#8216;", "'")
+  str = str.replace("&#8220;", '"');
+  str = str.replace("&#8216;", "'");
+  str = str.replace("&#8217;", "'");
+
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -196,11 +204,13 @@ function toTitleCase(str) {
 function unescapeHTML(str) {
 
   if(str == '' || str == null) {
-    return;
+    str = "(This article has no content.)\n\n";
+    return str;
   }
   var escapeChars = { lt: '<', gt: '>', quot: '"', apos: "'", amp: '&' };
   str = str.replace(/<\/?[^>]+(>|$)/g, "");
   str = str.replace("&nbsp; ", "");
+
   return str.replace(/\&([^;]+);/g, function(entity, entityCode) {
     var match;
 
@@ -312,37 +322,37 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: '600',
+    ...Platform.select({ios:{fontWeight:'600',},android: {fontFamily: 'Roboto-Thin',},}),
     color: Colors.black,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    fontWeight: '400',
+    ...Platform.select({ios:{fontWeight:'400',},android: {fontFamily: 'Roboto-Thin',},}),
     color: Colors.gray,
     textAlign: 'center',
   },
   sectionTitle: {
     fontSize: 30,
-    fontWeight: '800',
+    ...Platform.select({ios:{fontWeight:'800',},android: {fontFamily: 'Roboto-Thin',},}),
     color: Colors.black,
     marginBottom: 10,
   },
   articleTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    ...Platform.select({ios:{fontWeight:'600',},android: {fontFamily: 'Roboto-Thin',},}),
     color: Colors.black,
   },
   articlePreview: {
     //marginTop: 2,
     fontSize: 12,
-    fontWeight: '300',
+    ...Platform.select({ios:{fontWeight:'300',},android: {fontFamily: 'Roboto-Thin',},}),
     color: Colors.dark,
   },
   footer: {
     backgroundColor: Colors.white,
     fontSize: 12,
-    fontWeight: '600',
+    ...Platform.select({ios:{fontWeight:'600',},android: {fontFamily: 'Roboto-Thin',},}),
     padding: 40,
     paddingRight: 12,
     textAlign: 'right',
