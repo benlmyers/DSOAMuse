@@ -27,6 +27,8 @@ import {
   createAppContainer
 } from 'react-navigation';
 
+import { WebView } from 'react-native-webview';
+
 import {
   Header,
   LearnMoreLinks,
@@ -34,6 +36,8 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+//import { DrawerNavigator } from 'react-navigation';
 
 export default class NewsScreen extends React.Component {
 
@@ -46,7 +50,8 @@ export default class NewsScreen extends React.Component {
       isLoading: true,
       dataSource: [],
       titles: [],
-      fadeAnim: new Animated.Value(0),
+      fadeAnim: [new Animated.Value(0), new Animated.Value(0)],
+      textBox: "\n\n\n\n\n\n\n\n",
     }
   }
 
@@ -60,10 +65,20 @@ export default class NewsScreen extends React.Component {
       .then((responseJson) => {
 
         Animated.timing(
-          this.state.fadeAnim,
+          this.state.fadeAnim[0],
           {
             toValue: 1,
+            delay: 300,
             duration: 500,
+          }
+        ).start();
+
+        Animated.timing(
+          this.state.fadeAnim[1],
+          {
+            toValue: 1,
+            delay: 600,
+            duration: 1000,
           }
         ).start();
 
@@ -72,7 +87,7 @@ export default class NewsScreen extends React.Component {
           dataSource: responseJson,
           articleTitle: responseJson[0].title.rendered,
           articleBanner: responseJson[0].featured_image_urls.large,
-          articleContent: responseJson[0].content.rendered,
+          articleContent: modify(responseJson[0].content.rendered),
         }, function(){
 
         });
@@ -92,7 +107,7 @@ export default class NewsScreen extends React.Component {
         <Fragment>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
-              <Text>Loading...</Text>
+              <Text style={{textAlign: 'center', paddingTop: 50, ...Platform.select({ios: {fontWeight: '700',},android: {fontFamily: 'Roboto-Thin',},}),}}>GETTING YOUR ARTICLE</Text>
             </SafeAreaView>
           </Fragment>
       );
@@ -105,14 +120,16 @@ export default class NewsScreen extends React.Component {
           </StatusBar>
           <SafeAreaView>
             <ScrollView>
-              <Animated.View style={{opacity: this.state.fadeAnim}}>
-                <View style={styles.bgImageWrapper}>
-                  <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
-                </View>
+              <Animated.View style={{opacity: this.state.fadeAnim[0]}}>
+                <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
+                  <View style={styles.bgImageWrapper}>
+                    <Image source={{uri: this.state.articleBanner}} style={styles.bgImage}/>
+                  </View>
+                </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <Text style={styles.content}>
-                  {unescapeHTML(this.state.articleContent)}
-                </Text>
+                <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
+                  <WebView source={{html: this.state.articleContent + htmlStyle}} style={styles.content}/>
+                </Animated.View>
               </Animated.View>
             </ScrollView>
           </SafeAreaView>
@@ -122,12 +139,19 @@ export default class NewsScreen extends React.Component {
 
 }
 
+function modify(str) {
+  for(var i = 0; i < 100; i++) {
+    return str.replace(/<div*?<\/div>/g, '');
+  }
+}
+
 function toTitleCase(str) {
   if(str == '' || str == null) {
     return;
   }
   str = str.replace("&#8220;", '"')
   str = str.replace("&#8216;", "'")
+  str = str.replace("&#8217;", "'");
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -184,7 +208,52 @@ function simpleDate(str) {
   return month + " " + parseInt(day);
 }
 
+/*const RootDrawer = DrawerNavigator(
+	{
+		Home: {
+			screen: NewsScreen,
+		},
+	},
+	{
+		// Custom rendering component of drawer panel
+		//contentComponent: MainDrawer,
+	}
+);*/
+
 const screenWidth = Math.round(Dimensions.get('window').width);
+
+const htmlStyle = '\
+<style> \
+* { \
+  font-size: 46px; \
+  font-family: "system font"; \
+} \
+.Buttons { \
+  display: none; \
+} \
+input { \
+  display: none; \
+} \
+.wp-polls-loading { \
+  display: none; \
+} \
+.slideshowwrap, .remodal-close { \
+  display: none; \
+} \
+a { \
+  text-decoration: none; \
+  color: #000000; \
+} \
+img { \
+  color: #444444; \
+  font-size: 12px; \
+} \
+input { \
+  width: 20px; \
+  height: 20px; \
+} \
+</style> \
+'
 
 var styles = StyleSheet.create({
   bgImageWrapper: {
@@ -203,7 +272,11 @@ var styles = StyleSheet.create({
     padding: 20,
   },
   content: {
-    padding: 5,
+    padding: 10,
+    margin: 10,
     fontSize: 14,
+    //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
+    height: 5000,
+    //fontFamily: 'system font'
   },
 });
