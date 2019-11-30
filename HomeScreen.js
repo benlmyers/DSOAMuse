@@ -40,13 +40,14 @@ var map = [[]];
 export default class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'The Muse',
+    title: 'Muse',
     headerStyle: {
-      backgroundColor: '#ff0000',
+      backgroundColor: '#ffffff',
     },
     headerTitleStyle: {
-      color: '#ffffff',
-    }
+      color: '#000000',
+    },
+    headerTitle:(<Image style={{width:100, height: 100, flex: 1}} resizeMode="contain" source={{ uri: 'https://www.themuseatdreyfoos.com/wp-content/uploads/2019/07/IMG_1267.png' }}/>)
   };
 
   constructor(props){
@@ -101,18 +102,18 @@ export default class HomeScreen extends React.Component {
         <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
           <View style={styles.articleContainer}>
             <View>
-              <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
+              <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
                 <View style={styles.shadow}>
                   <Image source={{uri: art[1]}} style={styles.articleIcon}/>
                 </View>
               </TouchableHighlight>
-              <Text style={{textAlign: 'center', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
+              <Text style={{fontSize: 10, textAlign: 'center', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
               </View>
               <View style={styles.articleSubContainer}>
-                <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
+                <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
                   <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
                 </TouchableHighlight>
-                <TouchableHighlight underlayColor='#fff' onPress={() => navigate('News', {postNum: art[4]})}>
+                <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
                   <Text style={styles.articlePreview}>
                   {unescapeHTML(art[2])}
                   </Text>
@@ -167,9 +168,6 @@ export default class HomeScreen extends React.Component {
           <SafeAreaView>
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
               <View style={styles.body}>
-                <View style={styles.headerContainer}>
-                  <Image source={theMuse} style={{width: 150, height: 60}}/>
-                </View>
                 <View style={styles.sectionContainer}>
                   <Text style={styles.sectionTitle}>Latest</Text>
 
