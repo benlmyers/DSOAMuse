@@ -63,6 +63,7 @@ export default class HomeScreen extends React.Component {
       fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
       text: '',
       contentTitle: 'Latest',
+      views: '',
     }
 
     global.artNum = 0;
@@ -134,21 +135,23 @@ export default class HomeScreen extends React.Component {
 
         mapped.shift();
 
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-          views: mapped,
-        }, function(){
+        if(this.state.text == '') {
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson,
+            views: mapped,
+          }, function(){
 
-        if(post == 20) {
+            if(post == 20) {
 
-        } else {
+            } else {
 
-          this.load(post + 1);
+              this.load(post + 1);
 
+            }
+
+          });
         }
-
-        });
 
       })
       .catch((error) =>{
@@ -226,7 +229,7 @@ export default class HomeScreen extends React.Component {
 
         if(post == 20) {
 
-        } else {
+        } else if(this.state.text == ''){
 
           this.load(post + 1);
 
@@ -270,12 +273,12 @@ export default class HomeScreen extends React.Component {
                       placeholderTextColor='#aaaaaa'
                       clearButtonMode='always'
                       returnKeyType="search"
-                      enablesReturnKeyAutomatically='true'
+                      enablesReturnKeyAutomatically={true}
                       onChangeText={(text) => {
                         this.setState({text})
                       }}
                       onSubmitEditing={(text) => {
-                        (text != '') ? (this.state.contentTitle = 'Results', this.loadWithSearch(1, text)) : this.state.contentTitle = 'Latest'
+                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: null})) : this.state.contentTitle = 'Latest'
                       }}
                       value={this.state.text}
                     />
