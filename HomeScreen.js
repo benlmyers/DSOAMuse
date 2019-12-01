@@ -78,6 +78,8 @@ export default class HomeScreen extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
 
+        console.log(responseJson);
+
         this.state.fadeAnim.push(new Animated.Value(0));
 
         if(this.state.fadeAnim[post - 1]._value == 0) {
@@ -142,12 +144,8 @@ export default class HomeScreen extends React.Component {
             views: mapped,
           }, function(){
 
-            if(post == 20) {
-
-            } else {
-
+            if(post == 20) {} else {
               this.load(post + 1);
-
             }
 
           });
@@ -160,9 +158,11 @@ export default class HomeScreen extends React.Component {
   }
 
   loadWithSearch(post, query) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&search=' + query + '&per_page=1&page=' + post + '')
-      .then((response) => response.json())
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&search=\"' + query + '\"&per_page=1&page=' + post + '')
+      .then((response) => response.json(), console.log("Fetching search query"))
       .then((responseJson) => {
+
+        console.log(responseJson);
 
         this.state.fadeAnim.push(new Animated.Value(0));
 
@@ -229,7 +229,7 @@ export default class HomeScreen extends React.Component {
 
         if(post == 20) {
 
-        } else if(this.state.text == ''){
+        } else {
 
           this.load(post + 1);
 
@@ -278,7 +278,7 @@ export default class HomeScreen extends React.Component {
                         this.setState({text})
                       }}
                       onSubmitEditing={(text) => {
-                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: null})) : this.state.contentTitle = 'Latest'
+                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: null}), this.loadWithSearch(1, text)) : this.state.contentTitle = 'Latest'
                       }}
                       value={this.state.text}
                     />
