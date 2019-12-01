@@ -156,6 +156,90 @@ export default class HomeScreen extends React.Component {
       });
   }
 
+  loadWithSearch(post, query) {
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&search=' + query + '&per_page=1&page=' + post + '')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.state.fadeAnim.push(new Animated.Value(0));
+
+        if(this.state.fadeAnim[post - 1]._value == 0) {
+          Animated.timing(
+            this.state.fadeAnim[post - 1],
+            {
+              toValue: 1,
+              duration: 1000,
+            }
+          ).start();
+        }
+
+        for(var i = 0; i < responseJson.length; i++) {
+          if(responseJson[i].featured_image_urls.thumbnail == null || responseJson[i].featured_image_urls.thumbnail == null) {
+            responseJson[i].featured_image_urls.thumbnail = 'https://pbs.twimg.com/profile_images/1161968736850591744/MGN1fakE_400x400.jpg';
+          }
+        }
+
+        for(var i = 0; i < responseJson.length; i++) {
+          map.push([
+            responseJson[i].title.rendered,
+            responseJson[i].featured_image_urls.thumbnail,
+            responseJson[i].excerpt.rendered,
+            responseJson[i].date,
+            responseJson[i].id,
+          ]);
+        }
+
+        const {navigate} = this.props.navigation;
+
+        var mapped = map.map((art) =>
+        <Animated.View style={{opacity: this.state.fadeAnim[2]}}>
+          <View style={styles.articleContainer}>
+            <View>
+              <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
+                <View style={styles.shadow}>
+                  <Image source={{uri: art[1]}} style={styles.articleIcon}/>
+                </View>
+              </TouchableHighlight>
+              <Text style={{fontSize: 10, textAlign: 'center', color: 'gray', marginTop: 10}}>{simpleDate(art[3])}</Text>
+              </View>
+              <View style={styles.articleSubContainer}>
+                <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
+                  <Text style={styles.articleTitle}>{toTitleCase(art[0])}</Text>
+                </TouchableHighlight>
+                <TouchableHighlight underlayColor='#eee' onPress={() => navigate('News', {postNum: art[4]})}>
+                  <Text style={styles.articlePreview}>
+                  {unescapeHTML(art[2])}
+                  </Text>
+                </TouchableHighlight>
+            </View>
+          </View>
+        </Animated.View>
+        )
+
+        mapped.shift();
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson,
+          views: mapped,
+        }, function(){
+
+        if(post == 20) {
+
+        } else {
+
+          this.load(post + 1);
+
+        }
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
   render() {
 
     if(this.state.isLoading) {
@@ -175,7 +259,7 @@ export default class HomeScreen extends React.Component {
           <StatusBar barStyle="dark-content" title="The Muse" hidden={false} backgroundColor="#000000">
           </StatusBar>
           <SafeAreaView>
-            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
+            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView} indicatorStyle={'black'}>
               <View style={styles.body}>
                 <View style={styles.sectionContainer}>
                   <Text style={styles.sectionTitle}>{this.state.contentTitle}</Text>
@@ -184,10 +268,14 @@ export default class HomeScreen extends React.Component {
                       style={{color: '#000000', height: 40, padding: 5}}
                       placeholder="Search for an article..."
                       placeholderTextColor='#aaaaaa'
+                      clearButtonMode='always'
                       returnKeyType="search"
+                      enablesReturnKeyAutomatically='true'
                       onChangeText={(text) => {
-                        this.setState({text}),
-                        (text != '') ? this.state.contentTitle = 'Results' : this.state.contentTitle = 'Latest'
+                        this.setState({text})
+                      }}
+                      onSubmitEditing={(text) => {
+                        (text != '') ? (this.state.contentTitle = 'Results', this.loadWithSearch(1, text)) : this.state.contentTitle = 'Latest'
                       }}
                       value={this.state.text}
                     />

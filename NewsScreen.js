@@ -119,7 +119,7 @@ export default class NewsScreen extends React.Component {
           <StatusBar barStyle="dark-content">
           </StatusBar>
           <SafeAreaView>
-            <ScrollView>
+            <ScrollView indicatorStyle={'black'} stickyHeaderIncices={[0]}>
               <Animated.View style={{opacity: this.state.fadeAnim[0]}}>
                 <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
                   <View style={styles.bgImageWrapper}>
