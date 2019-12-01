@@ -656,7 +656,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DSOAMuse.app/DSOAMuse";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Muse.app/The Muse";
 			};
 			name = Debug;
 		};
@@ -677,7 +677,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DSOAMuse.app/DSOAMuse";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Muse.app/The Muse";
 			};
 			name = Release;
 		};
@@ -696,7 +696,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.DSOAMuse;
 				PRODUCT_NAME = "The Muse";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -716,7 +716,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.DSOAMuse;
 				PRODUCT_NAME = "The Muse";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

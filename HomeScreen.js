@@ -20,6 +20,7 @@ import {
   Animated,
   Button,
   TouchableHighlight,
+  TextInput,
 } from 'react-native';
 
 import {
@@ -60,6 +61,8 @@ export default class HomeScreen extends React.Component {
       dataSource: [],
       titles: [],
       fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],
+      text: '',
+      contentTitle: 'Latest',
     }
 
     global.artNum = 0;
@@ -84,6 +87,12 @@ export default class HomeScreen extends React.Component {
               duration: 1000,
             }
           ).start();
+        }
+
+        for(var i = 0; i < responseJson.length; i++) {
+          if(responseJson[i].featured_image_urls.thumbnail == null || responseJson[i].featured_image_urls.thumbnail == null) {
+            responseJson[i].featured_image_urls.thumbnail = 'https://pbs.twimg.com/profile_images/1161968736850591744/MGN1fakE_400x400.jpg';
+          }
         }
 
         for(var i = 0; i < responseJson.length; i++) {
@@ -169,7 +178,20 @@ export default class HomeScreen extends React.Component {
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
               <View style={styles.body}>
                 <View style={styles.sectionContainer}>
-                  <Text style={styles.sectionTitle}>Latest</Text>
+                  <Text style={styles.sectionTitle}>{this.state.contentTitle}</Text>
+                  <View style={{marginBottom: 15, borderColor: '#888888', borderWidth: 1, borderRadius: 5}}>
+                    <TextInput
+                      style={{color: '#000000', height: 40, padding: 5}}
+                      placeholder="Search for an article..."
+                      placeholderTextColor='#aaaaaa'
+                      returnKeyType="search"
+                      onChangeText={(text) => {
+                        this.setState({text}),
+                        (text != '') ? this.state.contentTitle = 'Results' : this.state.contentTitle = 'Latest'
+                      }}
+                      value={this.state.text}
+                    />
+                  </View>
 
                   {this.state.views}
 
