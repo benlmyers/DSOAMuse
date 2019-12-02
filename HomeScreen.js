@@ -272,10 +272,12 @@ export default class HomeScreen extends React.Component {
                 <View style={styles.sectionContainer}>
                   <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={styles.sectionTitle}>{this.state.contentTitle}</Text>
-                    <Button
-                      title="Clear"
-                      onPress={() => (this.load(1), this.setState({shouldReset: true, text: ''}))}
-                    />
+                    {
+                        this.state.text != '' && <Button
+                        title="Clear"
+                        onPress={() => (this.load(1), this.setState({shouldReset: true, text: ''}))}
+                      />
+                    }
                   </View>
                   <View style={{marginBottom: 15, borderColor: '#888888', borderWidth: 1, borderRadius: 5}}>
                     <TextInput
