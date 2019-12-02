@@ -149,9 +149,10 @@ function toTitleCase(str) {
   if(str == '' || str == null) {
     return;
   }
-  str = str.replace("&#8220;", '"')
-  str = str.replace("&#8216;", "'")
+  str = str.replace("&#8220;", '"');
+  str = str.replace("&#8216;", "'");
   str = str.replace("&#8217;", "'");
+  str = str.replace("&#038;", "&");
   return str.replace(
     /\w\S*/g,
     function(txt) {

@@ -310,6 +310,7 @@ function toTitleCase(str) {
   str = str.replace("&#8220;", '"');
   str = str.replace("&#8216;", "'");
   str = str.replace("&#8217;", "'");
+  str = str.replace("&#038;", "&");
 
   return str.replace(
     /\w\S*/g,
@@ -369,8 +370,6 @@ function simpleDate(str) {
   var year = str.slice(0, 4);
 
   var currentYear = new Date().getFullYear();
-
-  console.log(currentYear);
 
   if(parseInt(new Date().getFullYear()) != parseInt(year)) {
     return month + " " + parseInt(year);
