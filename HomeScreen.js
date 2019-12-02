@@ -64,6 +64,7 @@ export default class HomeScreen extends React.Component {
       text: '',
       contentTitle: 'Latest',
       views: '',
+      shouldReset: false,
     }
 
     global.artNum = 0;
@@ -158,7 +159,7 @@ export default class HomeScreen extends React.Component {
   }
 
   loadWithSearch(post, query) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&search=\"' + query + '\"&per_page=1&page=' + post + '')
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&per_page=1&page=' + post + '&search=hello')
       .then((response) => response.json(), console.log("Fetching search query"))
       .then((responseJson) => {
 
@@ -180,6 +181,11 @@ export default class HomeScreen extends React.Component {
           if(responseJson[i].featured_image_urls.thumbnail == null || responseJson[i].featured_image_urls.thumbnail == null) {
             responseJson[i].featured_image_urls.thumbnail = 'https://pbs.twimg.com/profile_images/1161968736850591744/MGN1fakE_400x400.jpg';
           }
+        }
+
+        if(this.state.shouldReset) {
+          map = [];
+          this.setState({shouldReset: false});
         }
 
         for(var i = 0; i < responseJson.length; i++) {
@@ -231,7 +237,7 @@ export default class HomeScreen extends React.Component {
 
         } else {
 
-          this.load(post + 1);
+          this.loadWithSearch(post + 1);
 
         }
 
@@ -278,7 +284,7 @@ export default class HomeScreen extends React.Component {
                         this.setState({text})
                       }}
                       onSubmitEditing={(text) => {
-                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: null}), this.loadWithSearch(1, text)) : this.state.contentTitle = 'Latest'
+                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: []}), this.loadWithSearch(1, text), this.setState({shouldReset: true})) : this.state.contentTitle = 'Latest'
                       }}
                       value={this.state.text}
                     />
