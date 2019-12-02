@@ -79,8 +79,6 @@ export default class HomeScreen extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
 
-        console.log(responseJson);
-
         this.state.fadeAnim.push(new Animated.Value(0));
 
         if(this.state.fadeAnim[post - 1]._value == 0) {
@@ -97,6 +95,11 @@ export default class HomeScreen extends React.Component {
           if(responseJson[i].featured_image_urls.thumbnail == null || responseJson[i].featured_image_urls.thumbnail == null) {
             responseJson[i].featured_image_urls.thumbnail = 'https://pbs.twimg.com/profile_images/1161968736850591744/MGN1fakE_400x400.jpg';
           }
+        }
+
+        if(this.state.shouldReset) {
+          map = [];
+          this.setState({shouldReset: false});
         }
 
         for(var i = 0; i < responseJson.length; i++) {
@@ -163,11 +166,9 @@ export default class HomeScreen extends React.Component {
       .then((response) => response.json(), console.log("Fetching search query name " + query))
       .then((responseJson) => {
 
-        console.log(responseJson);
-
         this.state.fadeAnim.push(new Animated.Value(0));
 
-        if(this.state.fadeAnim[post - 1]._value == 0) {
+        if(/*this.state.fadeAnim[post - 1]._value == 0*/true) {
           Animated.timing(
             this.state.fadeAnim[post - 1],
             {
@@ -227,21 +228,19 @@ export default class HomeScreen extends React.Component {
 
         mapped.shift();
 
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-          views: mapped,
-        }, function(){
 
-        if(post == 20) {
-
-        } else {
-
-          this.loadWithSearch(post + 1, query);
-
+        if(this.state.text != '') {
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson,
+            views: mapped,
+          }, function(){
+            if(post == 20) {
+            } else {
+              this.loadWithSearch(post + 1, query);
+            }
+          });
         }
-
-        });
 
       })
       .catch((error) =>{
@@ -271,7 +270,13 @@ export default class HomeScreen extends React.Component {
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView} indicatorStyle={'black'}>
               <View style={styles.body}>
                 <View style={styles.sectionContainer}>
-                  <Text style={styles.sectionTitle}>{this.state.contentTitle}</Text>
+                  <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text style={styles.sectionTitle}>{this.state.contentTitle}</Text>
+                    <Button
+                      title="Clear"
+                      onPress={() => (this.load(1), this.setState({shouldReset: true, text: ''}))}
+                    />
+                  </View>
                   <View style={{marginBottom: 15, borderColor: '#888888', borderWidth: 1, borderRadius: 5}}>
                     <TextInput
                       style={{color: '#000000', height: 40, padding: 5}}
