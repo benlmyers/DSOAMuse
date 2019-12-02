@@ -159,8 +159,8 @@ export default class HomeScreen extends React.Component {
   }
 
   loadWithSearch(post, query) {
-    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&per_page=1&page=' + post + '&search=hello')
-      .then((response) => response.json(), console.log("Fetching search query"))
+    return fetch('https://www.themuseatdreyfoos.com/wp-json/wp/v2/posts?context=embed&per_page=1&page=' + post + '&search=' + query + '')
+      .then((response) => response.json(), console.log("Fetching search query name " + query))
       .then((responseJson) => {
 
         console.log(responseJson);
@@ -237,7 +237,7 @@ export default class HomeScreen extends React.Component {
 
         } else {
 
-          this.loadWithSearch(post + 1);
+          this.loadWithSearch(post + 1, query);
 
         }
 
@@ -284,7 +284,8 @@ export default class HomeScreen extends React.Component {
                         this.setState({text})
                       }}
                       onSubmitEditing={(text) => {
-                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: []}), this.loadWithSearch(1, text), this.setState({shouldReset: true})) : this.state.contentTitle = 'Latest'
+                        console.log(this.state.text),
+                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: []}), this.loadWithSearch(1, this.state.text), this.setState({shouldReset: true})) : this.state.contentTitle = 'Latest'
                       }}
                       value={this.state.text}
                     />
@@ -365,7 +366,17 @@ function simpleDate(str) {
 
   var day = str.slice(8, 10);
 
-  return month + " " + parseInt(day);
+  var year = str.slice(0, 4);
+
+  var currentYear = new Date().getFullYear();
+
+  console.log(currentYear);
+
+  if(parseInt(new Date().getFullYear()) != parseInt(year)) {
+    return month + " " + parseInt(year);
+  } else {
+    return month + " " + parseInt(day);
+  }
 }
 
 const testArticleIcon = {
