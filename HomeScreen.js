@@ -99,6 +99,8 @@ export default class HomeScreen extends React.Component {
 
         if(this.state.shouldReset) {
           map = [];
+          this.setState({contentTitle: 'Latest'});
+          this.setState({fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],});
           this.setState({shouldReset: false});
         }
 
