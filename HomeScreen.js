@@ -257,7 +257,7 @@ export default class HomeScreen extends React.Component {
         <Fragment>
             <StatusBar barStyle="dark-content" title="Loading..." />
             <SafeAreaView>
-              <Text>Loading...</Text>
+              <Text style={styles.loading}>Loading...</Text>
             </SafeAreaView>
           </Fragment>
       );
@@ -286,15 +286,17 @@ export default class HomeScreen extends React.Component {
                       style={{color: '#000000', height: 40, padding: 5}}
                       placeholder="Search for an article..."
                       placeholderTextColor='#aaaaaa'
-                      clearButtonMode='always'
+                      clearButtonMode='never'
                       returnKeyType="search"
+                      blurOnSubmit='true'
                       enablesReturnKeyAutomatically={true}
                       onChangeText={(text) => {
                         this.setState({text})
                       }}
                       onSubmitEditing={(text) => {
                         console.log(this.state.text),
-                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: []}), this.loadWithSearch(1, this.state.text), this.setState({shouldReset: true})) : this.state.contentTitle = 'Latest'
+                        this.setState({fadeAnim: [new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)],}),
+                        (text != '') ? (this.state.contentTitle = 'Results', this.setState({views: []}), this.loadWithSearch(1, this.state.text), this.setState({shouldReset: true})) : (this.state.contentTitle = 'Latest')
                       }}
                       value={this.state.text}
                     />
@@ -428,6 +430,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     marginLeft: 18,
+  },
+  loading: {
+    textAlign: 'center',
+    marginTop: 30,
   },
   headerContainer: {
     marginTop: 32,

@@ -127,9 +127,7 @@ export default class NewsScreen extends React.Component {
                   </View>
                 </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
-                  <WebView source={{html: this.state.articleContent + htmlStyle}} style={styles.content} useWebKit={true} scrollEnabled={true}/>
-                </Animated.View>
+                <WebView source={{html: this.state.articleContent + htmlStyle}} style={styles.content} useWebKit={true} scrollEnabled={true} javascriptEnabled={true} automaticallyAdjustContentInsets={false}/>
               </Animated.View>
             </ScrollView>
           </SafeAreaView>
@@ -283,7 +281,7 @@ var styles = StyleSheet.create({
     resizeMode: 'cover',
     flex: 1,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
-    height: 5000,
+    //height: 5000,
     //fontFamily: 'system font'
   },
 });
