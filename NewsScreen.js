@@ -39,6 +39,17 @@ import {
 
 //import { DrawerNavigator } from 'react-navigation';
 
+const script = `<script>
+	window.location.hash = 1;
+    var calculator = document.createElement("div");
+    calculator.id = "height-calculator";
+    while (document.body.firstChild) {
+        calculator.appendChild(document.body.firstChild);
+    }
+	document.body.appendChild(calculator);
+    document.title = calculator.scrollHeight;
+</script>`;
+
 export default class NewsScreen extends React.Component {
 
   constructor(props){
@@ -52,7 +63,16 @@ export default class NewsScreen extends React.Component {
       titles: [],
       fadeAnim: [new Animated.Value(0), new Animated.Value(0)],
       textBox: "\n\n\n\n\n\n\n\n",
+      Height: 0,
     }
+  }
+
+  onNavigationChange(event) {
+    if (event.title) {
+        const htmlHeight = Number(event.title) //convert to number
+        this.setState({Height:htmlHeight});
+    }
+
   }
 
   componentDidMount() {
@@ -127,7 +147,13 @@ export default class NewsScreen extends React.Component {
                   </View>
                 </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
-                <WebView source={{html: this.state.articleContent + htmlStyle}} style={styles.content} useWebKit={true} scrollEnabled={true} javascriptEnabled={true} automaticallyAdjustContentInsets={false}/>
+                <WebView source={{html: this.state.articleContent + htmlStyle + script}}
+                  style={styles.content}
+                  useWebKit={true}
+                  scrollEnabled={false}
+                  javascriptEnabled={true}
+                  automaticallyAdjustContentInsets={false}
+                  onNavigationStateChange={this.onNavigationChange.bind(this)}/>
               </Animated.View>
             </ScrollView>
           </SafeAreaView>
@@ -254,6 +280,16 @@ input { \
   width: 20px; \
   height: 20px; \
 } \
+body, html, #height-calculator { \
+    margin: 0; \
+    padding: 0; \
+} \
+#height-calculator { \
+    position: absolute; \
+    top: 0; \
+    left: 0; \
+    right: 0; \
+} \
 </style> \
 '
 
@@ -281,7 +317,7 @@ var styles = StyleSheet.create({
     resizeMode: 'cover',
     flex: 1,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
-    //height: 5000,
+    height: 500,
     //fontFamily: 'system font'
   },
 });
