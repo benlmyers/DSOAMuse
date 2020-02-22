@@ -148,6 +148,7 @@ export default class NewsScreen extends React.Component {
                   </View>
                 </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
+                <Text style={styles.date}>January 31, 2020</Text>
                 <WebView source={{html: this.state.articleContent + htmlStyle + script}}
                   startInLoadingState={true}
                   style={styles.content}
@@ -313,6 +314,13 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     padding: 20,
   },
+  date: {
+    fontSize: 16,
+    fontWeight: '200',
+    color: Colors.gray,
+    marginBottom: -7,
+    textAlign: 'center',
+  },
   content: {
     padding: 10,
     margin: 15,
@@ -321,7 +329,7 @@ var styles = StyleSheet.create({
     resizeMode: 'cover',
     flex: 1,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
-    height: 555,
+    height: 552,
     //fontFamily: 'system font'
   },
 });
