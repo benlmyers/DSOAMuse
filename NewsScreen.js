@@ -150,7 +150,7 @@ export default class NewsScreen extends React.Component {
                 <WebView source={{html: this.state.articleContent + htmlStyle + script}}
                   style={styles.content}
                   useWebKit={true}
-                  scrollEnabled={false}
+                  scrollEnabled={true}
                   javascriptEnabled={true}
                   automaticallyAdjustContentInsets={false}
                   onNavigationStateChange={this.onNavigationChange.bind(this)}/>
