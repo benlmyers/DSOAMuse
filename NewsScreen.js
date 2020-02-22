@@ -282,9 +282,11 @@ input { \
   width: 20px; \
   height: 20px; \
 } \
-body, html, #height-calculator { \
+span { \
     margin: 0; \
     padding: 0; \
+    font-size: 46px; \
+    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif; \
 } \
 #height-calculator { \
     position: absolute; \
@@ -319,7 +321,7 @@ var styles = StyleSheet.create({
     resizeMode: 'cover',
     flex: 1,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
-    height: 600,
+    height: 555,
     //fontFamily: 'system font'
   },
 });
