@@ -28,6 +28,7 @@ import {
 } from 'react-navigation';
 
 import { WebView } from 'react-native-webview';
+import { MyWebView } from 'react-native-webview-autoheight';
 
 import {
   Header,
@@ -139,7 +140,7 @@ export default class NewsScreen extends React.Component {
           <StatusBar barStyle="dark-content">
           </StatusBar>
           <SafeAreaView>
-            <ScrollView indicatorStyle={'black'} stickyHeaderIncices={[0]}>
+            <ScrollView indicatorStyle={'black'} stickyHeaderIncices={[0]} showsVerticalScrollIndicator={false}>
               <Animated.View style={{opacity: this.state.fadeAnim[0]}}>
                 <Animated.View style={{opacity: this.state.fadeAnim[1]}}>
                   <View style={styles.bgImageWrapper}>
@@ -148,6 +149,7 @@ export default class NewsScreen extends React.Component {
                 </Animated.View>
                 <Text style={styles.title}>{toTitleCase(this.state.articleTitle)}</Text>
                 <WebView source={{html: this.state.articleContent + htmlStyle + script}}
+                  startInLoadingState={true}
                   style={styles.content}
                   useWebKit={true}
                   scrollEnabled={true}
@@ -311,13 +313,13 @@ var styles = StyleSheet.create({
   },
   content: {
     padding: 10,
-    margin: 10,
+    margin: 15,
     fontSize: 14,
     //height: height,
     resizeMode: 'cover',
     flex: 1,
     //height: parseInt(window.getComputedStyle(this.state.textBox).fontSize, 10),
-    height: 500,
+    height: 600,
     //fontFamily: 'system font'
   },
 });
