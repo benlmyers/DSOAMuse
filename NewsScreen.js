@@ -272,22 +272,31 @@ a { \
   text-decoration: none; \
   color: #000000; \
 } \
+div { \
+  width: 100% !important; \
+} \
 img { \
   color: #444444; \
   font-size: 12px; \
   display: block; \
-  max-width: 100%; \
+  width: 100%; \
   height: auto; \
 } \
 input { \
   width: 20px; \
   height: 20px; \
 } \
-span { \
+p, div { \
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif; !important \
+} \
+.photocaption { \
+  font-style: oblique; \
+} \
+span, a { \
     margin: 0; \
     padding: 0; \
     font-size: 46px; \
-    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif; \
+    font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif; !important \
 } \
 #height-calculator { \
     position: absolute; \
