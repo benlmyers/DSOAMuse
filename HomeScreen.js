@@ -316,7 +316,7 @@ export default class HomeScreen extends React.Component {
 
 function toTitleCase(str) {
   if(str == '' || str == null) {
-    return;
+    return "Update from The Muse";
   }
   str = str.replace("&#8220;", '"');
   str = str.replace("&#8216;", "'");
